@@ -3,7 +3,7 @@
  */
 import * as React from "react";
 import * as ReactDOM from "react-dom";
-import { Clock } from "./components/clock";
+import { Button } from "semantic-ui-react";
 
 /*
 ReactDOM.render(
@@ -11,10 +11,9 @@ ReactDOM.render(
   document.getElementById("example")
 );*/
 
-const clockEl = document.getElementById("clock");
-if (clockEl) {
-  ReactDOM.render(
-    <Clock size={200} timeFormat="24hour" hourFormat="standard" />,
-    clockEl
-  );
+const ButtonExampleButton = () => <Button>Click Here</Button>;
+
+const main = document.getElementById("main");
+if (main) {
+  ReactDOM.render(ButtonExampleButton(), main);
 }
