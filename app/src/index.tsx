@@ -27,7 +27,7 @@ interface ProfileProps {
 }
 
 interface MethodProps {
-  method: Method;
+  methods: Array<Method>;
   onUpdate: (activeMethod: Method) => any;
 }
 
@@ -125,33 +125,46 @@ class MethodListComponent extends React.Component<MethodProps, {}> {
     this.props.onUpdate(e);
   }
 
-  public render() {
-    return (
+  displayListPosts = () =>
+    this.props.methods.map(m => (
       <List.Item>
-        <Image avatar src="icons/-fff-11.png" />
+        <Image avatar src="src/icons/-fff-11.png" />
         <List.Content>
-          <List.Header as={this.props.method.methodId}>
-            {this.props.method.title}
-          </List.Header>
-          <List.Description>{this.props.method.description}</List.Description>
+          <List.Header as={m.methodId}>{m.title}</List.Header>
+          <List.Description>{m.description}</List.Description>
         </List.Content>
       </List.Item>
-    );
+    ));
+
+  public render() {
+    return <div />;
   }
 }
 
 class AddMethodComponent extends React.Component<ProfileProps, {}> {
   methods = Array<Method>();
   activeMethod: Method;
+  count = 0;
   constructor(props: ProfileProps) {
     super(props);
-    this.methods = generateTestMethods(30);
+    this.methods = generateTestMethods(4);
     this.activeMethod = this.methods[0];
   }
 
   updateMethod(method: Method) {
     this.activeMethod = method;
   }
+  displayListPosts = () =>
+    this.methods.map(m => (
+      <List.Item>
+        <Image avatar src="src/icons/-fff-11.png" />
+        <List.Content>
+          <List.Header>{m.title}</List.Header>
+          <List.Description>{m.description}</List.Description>
+        </List.Content>
+      </List.Item>
+    ));
+
   public render() {
     return (
       <div>
@@ -161,16 +174,12 @@ class AddMethodComponent extends React.Component<ProfileProps, {}> {
             <Grid>
               <Grid.Column width={4}>
                 <List divided verticalAlign="middle">
-                  <MethodListComponent
-                    method={this.methods[0]}
-                    onUpdate={this.updateMethod}
-                  />
+                  {this.displayListPosts()}
                 </List>
               </Grid.Column>
               <Grid.Column width={9}>
                 <Image src="https://react.semantic-ui.com/images/wireframe/paragraph.png" />
               </Grid.Column>
-              
             </Grid>
           </Segment>
         </div>
@@ -456,7 +465,6 @@ class Apphandler extends React.Component<{}, ApplicationState> {
   public render() {
     return (
       <Router>
-
         <div>
           <Route
             path="/login"
