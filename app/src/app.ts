@@ -182,7 +182,8 @@ const methods: Array<Method> = [
 ];
 
 const lisasProfile: Profile = {
-  name: "Lisa",
+  firstName: "Lisa",
+  lastName: "Doe",
   grade: 6,
   topic: "Pysics"
 };
