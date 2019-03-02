@@ -13,9 +13,10 @@ import {
   Header,
   Segment,
   Menu,
-  Icon
+  Icon,
+  List
 } from "semantic-ui-react";
-import { Test, Profile, Method } from "./app";
+import { Test, Profile, Method, generateTestMethods } from "./app";
 import { BrowserRouter as Router, Route, Link } from "react-router-dom";
 import { uptime } from "os";
 import { string } from "prop-types";
@@ -118,14 +119,38 @@ class MethodListComponent extends React.Component<MethodProps, {}> {
   constructor(props: MethodProps) {
     super(props);
   }
+
+  handleChange(e: any) {
+    console.log("ActiveMethod", e);
+    this.props.onUpdate(e);
+  }
+
   public render() {
-    return <div />;
+    return (
+      <List.Item>
+        <Image avatar src="icons/-fff-11.png" />
+        <List.Content>
+          <List.Header as={this.props.method.methodId}>
+            {this.props.method.title}
+          </List.Header>
+          <List.Description>{this.props.method.description}</List.Description>
+        </List.Content>
+      </List.Item>
+    );
   }
 }
 
 class AddMethodComponent extends React.Component<ProfileProps, {}> {
+  methods = Array<Method>();
+  activeMethod: Method;
   constructor(props: ProfileProps) {
     super(props);
+    this.methods = generateTestMethods(30);
+    this.activeMethod = this.methods[0];
+  }
+
+  updateMethod(method: Method) {
+    this.activeMethod = method;
   }
   public render() {
     return (
@@ -135,14 +160,17 @@ class AddMethodComponent extends React.Component<ProfileProps, {}> {
           <Segment attached="top">
             <Grid>
               <Grid.Column width={4}>
-                <Image src="https://react.semantic-ui.com/images/wireframe/image.png" />
+                <List divided verticalAlign="middle">
+                  <MethodListComponent
+                    method={this.methods[0]}
+                    onUpdate={this.updateMethod}
+                  />
+                </List>
               </Grid.Column>
               <Grid.Column width={9}>
                 <Image src="https://react.semantic-ui.com/images/wireframe/paragraph.png" />
               </Grid.Column>
-              <Grid.Column width={3}>
-                <Image src="https://react.semantic-ui.com/images/wireframe/media-paragraph.png" />
-              </Grid.Column>
+              
             </Grid>
           </Segment>
         </div>
@@ -428,6 +456,7 @@ class Apphandler extends React.Component<{}, ApplicationState> {
   public render() {
     return (
       <Router>
+
         <div>
           <Route
             path="/login"
